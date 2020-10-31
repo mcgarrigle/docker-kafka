@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+
+  kafka:
+    hostname: kdc.local
+    image: kafka:latest
+    environment:
+      - KAFKA_LISTENERS=localhost:9092
+      - KAFKA_ADVERTISED_LISTENERS=localhost:9092
+    volumes:
+      - ./root:/root
+    networks:
+      - lan
+
+networks:
+  lan:

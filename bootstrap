@@ -1,5 +1,9 @@
 #!/bin/bash
 
+envsubst \
+  < /opt/kafka/config/server.properties.template \
+  > /opt/kafka/config/server.properties
+
 for rc in /etc/rc3.d/S*; do
   (bash $rc start)&
 done
