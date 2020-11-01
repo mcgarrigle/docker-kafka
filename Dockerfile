@@ -2,7 +2,7 @@ FROM centos:7
 
 RUN rpm --import https://www.centos.org/keys/RPM-GPG-KEY-CentOS-7
 RUN yum install -q -y epel-release
-RUN yum install -q -y java gettext
+RUN yum install -q -y java gettext iproute
 
 RUN useradd kafka -m
 RUN usermod -aG wheel kafka

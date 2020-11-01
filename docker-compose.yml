@@ -3,15 +3,26 @@ version: '2'
 services:
 
   kafka:
-    hostname: kdc.local
+    hostname: kafka
     image: kafka:latest
     environment:
-      - KAFKA_LISTENERS=localhost:9092
-      - KAFKA_ADVERTISED_LISTENERS=localhost:9092
+      KAFKA_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://kafka:29092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
     volumes:
       - ./root:/root
+    ports:
+      - "29092:29092"
     networks:
       - lan
 
 networks:
   lan:
+
+# https://rmoff.net/2018/08/02/kafka-listeners-explained/
+#
+# KAFKA_LISTENERS: LISTENER_BOB://kafka0:29092,LISTENER_FRED://localhost:9092
+# KAFKA_ADVERTISED_LISTENERS: LISTENER_BOB://kafka0:29092,LISTENER_FRED://localhost:9092
+# KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_BOB:PLAINTEXT,LISTENER_FRED:PLAINTEXT
+# KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_BOB
