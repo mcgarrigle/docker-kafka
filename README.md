@@ -30,12 +30,7 @@ host ports and each application is started.
 |   +---------------------------------+   |
 |                                         |
 +-----------------------------------------+
-
-Component Port        Maps to         Example
-------------------------------------------------------------------------
-Zookeeper 2181/tcp -> 0.0.0.0:32773   --zookeeper vm.foo.com:32773
-Kafka     9092/tcp -> 0.0.0.0:32771   --bootstrap-from vm.foo.com:32771
-
+```
 ## Docker Image Build
 ```
 $ ./assets.sh
