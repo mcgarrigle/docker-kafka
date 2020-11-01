@@ -1,5 +1,7 @@
 #!/bin/bash
 
+/usr/local/bin/self-signed-certificate.sh "$HOSTNAME"
+
 envsubst \
   < /opt/kafka/config/server.properties.template \
   > /opt/kafka/config/server.properties
