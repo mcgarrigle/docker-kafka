@@ -41,3 +41,7 @@ Kafka     9092/tcp -> 0.0.0.0:32771   --bootstrap-from vm.foo.com:32771
 $ ./assets.sh
 $ docker build --tag kafka:latest .
 ```
+## Test
+```
+$ docker run -it --network=host edenhill/kafkacat:1.6.0 -b localhost:29092 -L
+```
