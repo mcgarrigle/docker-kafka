@@ -17,6 +17,3 @@ RUN rm -f /etc/rc3.d/*
 COPY ./rc/* /etc/rc3.d/
 COPY bootstrap /
 CMD /bootstrap
-
-EXPOSE 2181
-EXPOSE 9092

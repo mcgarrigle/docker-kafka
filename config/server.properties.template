@@ -115,6 +115,7 @@ zookeeper.connect=localhost:2181
 # Timeout in ms for connecting to zookeeper
 zookeeper.connection.timeout.ms=18000
 
+producer.auto.create.topics=client-side
 
 ############################# Group Coordinator Settings #############################
 
