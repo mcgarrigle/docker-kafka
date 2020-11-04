@@ -1,4 +1,10 @@
 *.tar.gz
 *.tgz
 *.gz
+config/*.crt
+config/*.jks
+config/*.key
+config/*.p12
+config/*.pass
+
 root
