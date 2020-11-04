@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR="./config"
+DIR="./security"
 
 CN="$1"
 CN="${CN:=kafka}"
