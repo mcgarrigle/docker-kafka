@@ -45,17 +45,20 @@ socket.request.max.bytes=104857600
 
 # SSL/TLS settings
 
+ssl.protocol=TLS
 ssl.enabled.protocols=TLSv1.2,TLSv1.1,TLSv1
 ssl.endpoint.identification.algorithm=
+
 ssl.keymanager.algorithm=SunX509
-ssl.keystore.location=/opt/kafka/security/kafka.jks
-ssl.keystore.password=BF3U7SYNJ0ZT
 ssl.keystore.type=JKS
-ssl.protocol=TLS
+ssl.keystore.location=${KAFKA_SSL_KEYSTORE_LOCATION}
+ssl.keystore.password=${KAFKA_SSL_KEYSTORE_PASSWORD}
+
 ssl.trustmanager.algorithm=PKIX
-ssl.truststore.location=/opt/kafka/security/trust.jks
-ssl.truststore.password=BF3U7SYNJ0ZT
 ssl.truststore.type=JKS
+ssl.truststore.location=${KAFKA_SSL_TRUSTSTORE_LOCATION}
+ssl.truststore.password=${KAFKA_SSL_KEYSTORE_PASSWORD}
+
 # authorizer.class.name=kafka.security.auth.SimpleAclAuthorizer
 # allow.everyone.if.no.acl.found=true
 # ssl.client.auth=required

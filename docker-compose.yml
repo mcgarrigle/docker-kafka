@@ -5,11 +5,15 @@ services:
   kafka:
     hostname: kafka
     image: kafka:latest
+    env_file:
+      - './security/kafka.pass'
     environment:
       KAFKA_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://kafka:29092,SSL://kafka:29093
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://kafka:29092,SSL://kafka:29093
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,SSL:SSL
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_SSL_KEYSTORE_LOCATION: '/opt/kafka/security/kafka.jks'
+      KAFKA_SSL_TRUSTSTORE_LOCATION: '/opt/kafka/security/trust.jks'
     volumes:
       - ./root:/root
       - ./security:/opt/kafka/security

@@ -17,7 +17,7 @@ done
 
 PASSPHRASE=$(./bin/passphrase)
 
-echo $PASSPHRASE > "${DIR}/${CN}.pass"
+echo "KAFKA_SSL_KEYSTORE_PASSWORD=${PASSPHRASE}" > "${DIR}/${CN}.pass"
 
 cat > "${CONFIG}" <<EOF
 [req]
