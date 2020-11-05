@@ -43,6 +43,22 @@ socket.receive.buffer.bytes=102400
 # The maximum size of a request that the socket server will accept (protection against OOM)
 socket.request.max.bytes=104857600
 
+# SSL/TLS settings
+
+ssl.enabled.protocols=TLSv1.2,TLSv1.1,TLSv1
+ssl.endpoint.identification.algorithm=
+ssl.keymanager.algorithm=SunX509
+ssl.keystore.location=/opt/kafka/security/kafka.jks
+ssl.keystore.password=BF3U7SYNJ0ZT
+ssl.keystore.type=JKS
+ssl.protocol=TLS
+ssl.trustmanager.algorithm=PKIX
+ssl.truststore.location=/opt/kafka/security/trust.jks
+ssl.truststore.password=BF3U7SYNJ0ZT
+ssl.truststore.type=JKS
+# authorizer.class.name=kafka.security.auth.SimpleAclAuthorizer
+# allow.everyone.if.no.acl.found=true
+# ssl.client.auth=required
 
 ############################# Log Basics #############################
 
