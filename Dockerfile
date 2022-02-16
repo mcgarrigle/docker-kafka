@@ -12,7 +12,8 @@ RUN rm -f /etc/rc3.d/*
 COPY ./rc/* /etc/rc3.d/
 COPY bootstrap /
 
-# These are defaults, they can be overridden in containers
+# These are image defaults, 
+# they can be overridden in containers
 
 ENV KAFKA_BROKER_ID=0
 ENV KAFKA_NUM_NETWORK_THREADS=3
