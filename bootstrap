@@ -1,10 +1,13 @@
 #!/bin/bash
 
-/usr/local/bin/self-signed-certificate.sh "$HOSTNAME"
+CONFIG='/opt/kafka/config/server.properties'
 
-envsubst \
-  < /opt/kafka/config/server.properties.template \
-  > /opt/kafka/config/server.properties
+for var in "${!KAFKA_@}"; do
+   PROPERTY=$(echo ${var,,} | tr '_' '.')
+   PROPERTY="${PROPERTY:6}"
+   sed -i "s/^$PROPERTY.*\$//" $CONFIG
+   echo "$PROPERTY=${!var}" >> $CONFIG
+done
 
 for rc in /etc/rc3.d/S*; do
   (bash $rc start)&

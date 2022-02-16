@@ -8,7 +8,7 @@ RUN usermod -aG wheel kafka
 COPY ./kafka*.tgz  /tmp/
 RUN tar -C /opt -xzf /tmp/*.tgz
 RUN mv /opt/kafka_*/ /opt/kafka/
-COPY ./config/server.properties.template /opt/kafka/config/
+COPY ./config/server.properties /opt/kafka/config/
 RUN rm -f /etc/rc3.d/*
 COPY ./rc/* /etc/rc3.d/
 COPY bootstrap /
