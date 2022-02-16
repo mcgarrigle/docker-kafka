@@ -1,15 +1,11 @@
 FROM oraclelinux:8.5
 
-RUN dnf install -q -y tar java gettext openssl librdkafka
+RUN dnf install -q -y java
 
 RUN useradd kafka -m
 RUN usermod -aG wheel kafka
 
-COPY ./kafka*.tgz  /tmp/
-RUN tar -C /opt -xzf /tmp/*.tgz
-RUN mv /opt/kafka_*/ /opt/kafka/
-RUN rm -f /etc/rc3.d/*
-COPY ./rc/* /etc/rc3.d/
+COPY ./kafka_2.13-3.1.0/ /opt/kafka/
 COPY bootstrap /
 
 # These are image defaults, 

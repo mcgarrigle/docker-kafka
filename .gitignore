@@ -6,5 +6,5 @@ security/*.jks
 security/*.key
 security/*.p12
 security/*.pass
-
+kafka_*
 root
