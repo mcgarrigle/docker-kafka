@@ -4,7 +4,7 @@ services:
 
   kafka:
     hostname: kafka
-    image: kafka:latest
+    image: kafka:test
     env_file:
       - './security/kafka.pass'
     environment:

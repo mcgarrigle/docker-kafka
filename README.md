@@ -40,3 +40,7 @@ $ docker build --tag kafka:latest .
 ```
 $ docker run -it --network=host edenhill/kafkacat:1.6.0 -b localhost:29092 -L
 ```
+
+Sentry
+http://coheigea.blogspot.com/2018/02/the-apache-sentry-security-service-part.html
+
