@@ -2,6 +2,12 @@ version: '2'
 
 services:
 
+  zookeeper:
+    hostname: zookeeper
+    image: zookeeper:latest
+    networks:
+      - lan
+
   kafka:
     hostname: kafka
     image: kafka:test

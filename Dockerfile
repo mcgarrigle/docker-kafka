@@ -1,9 +1,5 @@
 FROM oraclelinux:8.5
 
-#RUN rpm --import https://www.centos.org/keys/RPM-GPG-KEY-CentOS-7
-#RUN yum install -q -y epel-release
-#RUN yum install -q -y java gettext iproute openssl librdkafka
-
 RUN dnf install -q -y tar java gettext openssl librdkafka
 
 RUN useradd kafka -m
