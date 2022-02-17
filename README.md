@@ -3,48 +3,22 @@
 This project maintains the development image for Kafka
 
 The image contains:
-* Kafka     2.1.1
-* Zookeeper 2.1.1
+* Kafka     3.1.0
 
-When the image is run, internal application TCP ports are mapped to ephemeral
-host ports and each application is started.
-```
-+-----------------------------------------+
-| Virtual Machine (vm.foo.com)            |
-|                                         |
-|   +---------------------------------+   |
-|   | Container  (8de05600b948)       |   |
-|   |                                 |   |
-|   |    +-------------------------+  |   |
-|   |    |       Kafka             |  |   |
-|   |    |       localhost:9092    |  |   |
-|   |    |                         |  |   |
-|   |    +-------------------------+  |   |
-|   |                                 |   |
-|   |    +-------------------------+  |   |
-|   |    |       Zookeeper         |  |   |
-|   |    |       localhost:2181    |  |   |
-|   |    |                         |  |   |
-|   |    +-------------------------+  |   |
-|   |                                 |   |
-|   +---------------------------------+   |
-|                                         |
-+-----------------------------------------+
-```
 ## Docker Image Build
 ```
-$ ./assets.sh
+$ ./bin/assets.sh
 $ docker build --tag kafka:latest .
 ```
+
+## Run Docker Compose
+```
+$ docker-compose up -d
+```
+Build kakacat (outside the scope of this README)
+
 ## Test
 ```
-$ docker run -it --network=host edenhill/kafkacat:1.6.0 -b localhost:29092 -L
-
 $ echo fum |./root/kafkacat -P -b kafka:29093 -t events -X security.protocol=SSL -X ssl.ca.location=security/kafka.crt
 $ ./root/kafkacat -C -e -b kafka:29093 -t events -X security.protocol=SSL -X ssl.ca.location=security/kafka.crt
-
 ```
-
-Sentry
-http://coheigea.blogspot.com/2018/02/the-apache-sentry-security-service-part.html
-

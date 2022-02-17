@@ -5,10 +5,10 @@ services:
   zookeeper:
     hostname: zookeeper
     image: zookeeper:latest
-#    environment:
-#      ZOO_DATA_DIR: '/data'
-#    volumes:
-#      - 'volume_zookeeper:/data'
+    environment:
+      ZOO_DATA_DIR: '/data'
+    volumes:
+      - 'volume_zookeeper:/data'
     networks:
       - lan
 
@@ -16,7 +16,6 @@ services:
     hostname: kafka
     image: kafka:test
     environment:
-      KAFKA_BROKER_ID: 101
       KAFKA_LOG_DIRS: '/data'
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181/kafka
       KAFKA_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://kafka:29092,SSL://kafka:29093
