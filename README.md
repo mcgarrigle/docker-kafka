@@ -39,4 +39,12 @@ $ docker build --tag kafka:latest .
 ## Test
 ```
 $ docker run -it --network=host edenhill/kafkacat:1.6.0 -b localhost:29092 -L
+
+$ echo fum |./root/kafkacat -P -b kafka:29093 -t events -X security.protocol=SSL -X ssl.ca.location=security/kafka.crt
+$ ./root/kafkacat -C -e -b kafka:29093 -t events -X security.protocol=SSL -X ssl.ca.location=security/kafka.crt
+
 ```
+
+Sentry
+http://coheigea.blogspot.com/2018/02/the-apache-sentry-security-service-part.html
+

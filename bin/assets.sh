@@ -4,7 +4,7 @@
 
 function download {
   local url=$1
-  local file="$(basename $url)"
+  local file=$2
   echo "download $url"
   if [ -e $file ]; then
     return
@@ -15,6 +15,12 @@ function download {
 
 # ---------------------------------------------------------
 
-download "https://downloads.apache.org/kafka/2.6.0/kafka_2.13-2.6.0.tgz"
+url="https://downloads.apache.org/kafka/3.1.0/kafka_2.13-3.1.0.tgz"
+
+file="/tmp/$(basename $url)"
+
+download $url $file
+
+tar xzf $file
 
 # end

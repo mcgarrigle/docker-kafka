@@ -1,19 +1,32 @@
-FROM centos:7
+FROM oraclelinux:8.5
 
-RUN rpm --import https://www.centos.org/keys/RPM-GPG-KEY-CentOS-7
-RUN yum install -q -y epel-release
-RUN yum install -q -y java gettext iproute
+RUN dnf install -q -y java
 
 RUN useradd kafka -m
 RUN usermod -aG wheel kafka
 
-COPY ./*.tgz  /tmp
-RUN tar -C /opt -xzf /tmp/*.tgz
-RUN mv /opt/kafka_*/ /opt/kafka/
-RUN echo -e "\ndelete.topic.enable = true" >> "/opt/kafka/config/server.properties"
-COPY ./config/server.properties.template /opt/kafka/config/
-
-RUN rm -f /etc/rc3.d/*
-COPY ./rc/* /etc/rc3.d/
+COPY ./kafka_2.13-3.1.0/ /opt/kafka/
 COPY bootstrap /
+
+# These are image defaults, 
+# they can be overridden in containers
+
+ENV KAFKA_BROKER_ID=0
+ENV KAFKA_NUM_NETWORK_THREADS=3
+ENV KAFKA_NUM_IO_THREADS=8
+ENV KAFKA_SOCKET_SEND_BUFFER_BYTES=102400
+ENV KAFKA_SOCKET_RECEIVE_BUFFER_BYTES=102400
+ENV KAFKA_SOCKET_REQUEST_MAX_BYTES=104857600
+ENV KAFKA_LOG_DIRS=/tmp/kafka-logs
+ENV KAFKA_NUM_PARTITIONS=1
+ENV KAFKA_NUM_RECOVERY_THREADS_PER_DATA_DIR=1
+ENV KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+ENV KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
+ENV KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
+ENV KAFKA_LOG_RETENTION_HOURS=168
+ENV KAFKA_LOG_SEGMENT_BYTES=1073741824
+ENV KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS=300000
+ENV KAFKA_ZOOKEEPER_CONNECT=localhost:2181
+ENV KAFKA_ZOOKEEPER_CONNECTION_TIMEOUT_MS=18000
+
 CMD /bootstrap

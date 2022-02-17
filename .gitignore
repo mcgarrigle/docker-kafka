@@ -1,4 +1,10 @@
 *.tar.gz
 *.tgz
 *.gz
+security/*.crt
+security/*.jks
+security/*.key
+security/*.p12
+security/*.pass
+kafka_*
 root
