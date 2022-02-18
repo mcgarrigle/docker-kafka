@@ -34,6 +34,7 @@ services:
       KAFKA_SSL_TRUSTSTORE_PASSWORD: BF3U7SYNJ0ZT
       KAFKA_SSL_KEYSTORE_LOCATION: '/opt/kafka/security/kafka.jks'
       KAFKA_SSL_TRUSTSTORE_LOCATION: '/opt/kafka/security/trust.jks'
+      KAFKA_FLUSH_MESSAGES: 1
     volumes:
       - ./root:/root
       - ./security:/opt/kafka/security

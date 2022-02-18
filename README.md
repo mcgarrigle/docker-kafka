@@ -8,7 +8,7 @@ The image contains:
 ## Docker Image Build
 ```
 $ ./bin/assets.sh
-$ docker build --tag kafka:latest .
+$ docker build --tag kafka:test .
 ```
 
 ## Run Docker Compose
