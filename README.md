@@ -22,3 +22,5 @@ Build kakacat (outside the scope of this README)
 $ echo fum |./root/kafkacat -P -b kafka:29093 -t events -X security.protocol=SSL -X ssl.ca.location=security/kafka.crt
 $ ./root/kafkacat -C -e -b kafka:29093 -t events -X security.protocol=SSL -X ssl.ca.location=security/kafka.crt
 ```
+
+Hint:  If kafka faile son restart then wait until ephemeral znodes have timed out before restarting kafka.
