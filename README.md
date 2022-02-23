@@ -11,6 +11,30 @@ $ ./bin/assets.sh
 $ docker build --tag kafka:test .
 ```
 
+## Build PKI
+```
+$ cd security
+
+$ cert-make-ca.sh 'C=GB,L=CARDIFF,O=MAC,OU=KAFKA,CN=CA'
+  # generates
+  # ca.key
+  # ca.crt
+
+$ cert-make-host.sh 'C=GB,L=CARDIFF,O=MAC,CN=KAFKA' kafka.mac.wales
+  # generates
+  # kafka.mac.wales.key
+  # kafka.mac.wales.crt
+  # kafka.mac.wales.jks
+  # kafka.mac.wales.pass
+
+$ cert-make-user.sh 'C=GB,L=CARDIFF,O=MAC,OU=KAFKA'
+  # generates
+  # U10083B58.key
+  # U10083B58.crt
+  # U10083B58.jks
+  # U10083B58.pass
+```
+
 ## Run Docker Compose
 ```
 $ docker-compose up -d

@@ -16,6 +16,8 @@ CSR="/tmp/${CN}.csr"
 PASS="${CN}.pass"
 CERT="${CN}.crt"
 KEY="${CN}.key"
+P12="${CN}.p12"
+
 KEYSTORE="${CN}.jks"
 
 echo "Generating certificate for ${CN}"
@@ -58,7 +60,7 @@ openssl req -new \
   -config "${CONFIG}" \
   -out "${CSR}"
 
-# sign CSR genertating certificate
+# sign CSR generating certificate
 
 openssl x509 -req \
   -in "${CSR}" \
@@ -73,8 +75,6 @@ openssl x509 -req \
 
 openssl x509 -in "${CERT}" -text -noout
 
-exit
-
 openssl pkcs12 -export \
   -password pass:${PASSPHRASE} \
   -in  "${CERT}" \
@@ -82,15 +82,17 @@ openssl pkcs12 -export \
   -chain \
   -CAfile "ca.crt" \
   -name "${CN}" \
-  -out "${CN}.p12"
+  -out "${P12}"
 
 keytool -importkeystore \
   -srcstoretype PKCS12 \
   -srcstorepass $PASSPHRASE \
   -deststorepass $PASSPHRASE \
-  -srckeystore "${CN}.p12" \
+  -srckeystore "${P12}" \
   -destkeystore "${KEYSTORE}" \
   2> /dev/null
+
+rm -f "${P12}"
 
 echo '------------------------------------'
 echo /// KEYSTORE
