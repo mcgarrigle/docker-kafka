@@ -1,29 +1,31 @@
 #!/bin/bash
 
 # Usage:
-# cert-make-user.sh 'C=GB,L=CARDIFF,O=EXAMPLE,OU=KAFKA'
+# cert-make-host.sh 'C=GB,L=CARDIFF,O=EXAMPLE,CN=KAFKA' kafka.example.com
 
 passphrase() {
   echo $RANDOM | md5sum | head -c $1
 }
 
-RAND="$(passphrase 8)"
-CN="U${RAND^^}"
-BN="$1"
+
+DN="$1"
+CN="$2"
+
 CONFIG="/tmp/${CN}.conf"
 CSR="/tmp/${CN}.csr"
+
 PASS="${CN}.pass"
 CERT="${CN}.crt"
 KEY="${CN}.key"
 KEYSTORE="${CN}.jks"
 
-echo "Generating certificate for ${BN},CN=${CN}"
+echo "Generating certificate for ${CN}"
 
 PASSPHRASE=$(passphrase 12)
 
 echo "${PASSPHRASE}" > "${PASS}"
 
-SUBJECT=$(echo "${BN}" | tr ',' '\n')
+SUBJECT=$(echo "${DN}" | tr ',' '\n')
 
 cat > "${CONFIG}" <<EOF
 [req]
@@ -35,11 +37,16 @@ x509_extensions = v3_req
 
 [dn]
 $SUBJECT
-CN=${CN}
 
 [v3_req]
 basicConstraints=CA:FALSE
+subjectAltName=dirName:alternatives
+
+[alternatives]
+DNS.1 = ${CN}
 EOF
+
+cat "${CONFIG}"
 
 openssl genrsa -out "${KEY}" 4096
 
@@ -60,6 +67,8 @@ openssl x509 -req \
   -sha256
 
 openssl x509 -in "${CERT}" -text -noout
+
+exit
 
 openssl pkcs12 -export \
   -password pass:${PASSPHRASE} \

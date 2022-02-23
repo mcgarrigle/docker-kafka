@@ -1,18 +1,14 @@
 #!/bin/bash
 
 # Usage:
-# ./cert-make-ca.sh 'C=GB,L=CARDIFF,O=EXAMPLE,OU=KAFKA,CN=CA' '../security/ca'
+# cert-make-ca.sh 'C=GB,L=CARDIFF,O=EXAMPLE,OU=KAFKA,CN=CA'
 
 DN="$1"
-DN="${DN:=kafka}"
-NAME="$2"
 
-DIR=$(dirname ${NAME})
-CONFIG="/tmp/$(basename ${NAME}).conf"
-CERT="${NAME}.crt"
-KEY="${NAME}.key"
-KEYSTORE="${NAME}.jks"
-TRUSTSTORE="${DIR}/trust.jks"
+CONFIG="/tmp/ca.conf"
+CERT="ca.crt"
+KEY="ca.key"
+TRUSTSTORE="trust.jks"
 
 PASSPHRASE="GQLBSQFSAPTC"
 
