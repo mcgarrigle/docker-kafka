@@ -7,7 +7,6 @@ passphrase() {
   echo $RANDOM | md5sum | head -c $1
 }
 
-
 DN="$1"
 CN="$2"
 
@@ -40,7 +39,7 @@ $SUBJECT
 
 [v3_req]
 basicConstraints=CA:FALSE
-subjectAltName=dirName:alternatives
+subjectAltName=@alternatives
 
 [alternatives]
 DNS.1 = ${CN}
@@ -50,6 +49,8 @@ cat "${CONFIG}"
 
 openssl genrsa -out "${KEY}" 4096
 
+# convert from CONF to CSR
+
 openssl req -new \
   -sha256 \
   -nodes \
@@ -57,8 +58,12 @@ openssl req -new \
   -config "${CONFIG}" \
   -out "${CSR}"
 
+# sign CSR genertating certificate
+
 openssl x509 -req \
   -in "${CSR}" \
+  -extfile "${CONFIG}" \
+  -extensions "v3_req" \
   -out "${CERT}" \
   -CA "ca.crt" \
   -CAkey "ca.key" \
