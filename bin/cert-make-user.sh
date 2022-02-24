@@ -78,6 +78,13 @@ keytool -importkeystore \
   -destkeystore "${KEYSTORE}" \
   2> /dev/null
 
+keytool -import \
+  -file "ca.crt" \
+  -alias ca1 \
+  -keystore "${KEYSTORE}" \
+  -storepass $PASSPHRASE \
+  -noprompt
+
 echo '------------------------------------'
 echo /// KEYSTORE
 keytool -list -keystore "${KEYSTORE}" -storepass $PASSPHRASE 2> /dev/null
