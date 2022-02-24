@@ -16,6 +16,8 @@ services:
   kafka:
     hostname: kafka
     image: kafka:test
+    env_file:
+      - './security/keystores.pass'
     environment:
       KAFKA_BROKER_ID: 101
       KAFKA_LOG_DIRS: '/data'
@@ -31,11 +33,8 @@ services:
       KAFKA_SSL_TRUSTMANAGER_ALGORITHM: PKIX
       KAFKA_SSL_KEYSTORE_TYPE: JKS
       KAFKA_SSL_TRUSTSTORE_TYPE: JKS
-      KAFKA_SSL_KEYSTORE_PASSWORD: BF3U7SYNJ0ZT
-      KAFKA_SSL_TRUSTSTORE_PASSWORD: BF3U7SYNJ0ZT
       KAFKA_SSL_KEYSTORE_LOCATION: '/opt/kafka/security/kafka.jks'
       KAFKA_SSL_TRUSTSTORE_LOCATION: '/opt/kafka/security/trust.jks'
-      KAFKA_FLUSH_MESSAGES: 1
     volumes:
       - ./root:/root
       - ./security:/opt/kafka/security

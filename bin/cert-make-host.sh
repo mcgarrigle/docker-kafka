@@ -10,6 +10,9 @@ passphrase() {
 DN="$1"
 CN="$2"
 
+shift
+SAN=$(echo $@ | xargs -n 1 | awk '{print "DNS." NR " =",$0}')
+
 CONFIG="/tmp/${CN}.conf"
 CSR="/tmp/${CN}.csr"
 
@@ -25,6 +28,7 @@ echo "Generating certificate for ${CN}"
 PASSPHRASE=$(passphrase 12)
 
 echo "${PASSPHRASE}" > "${PASS}"
+echo "KAFKA_SSL_KEYSTORE_PASSWORD=${PASSPHRASE}" >> "keystores.pass"
 
 SUBJECT=$(echo "${DN}" | tr ',' '\n')
 

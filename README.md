@@ -19,6 +19,8 @@ $ cert-make-ca.sh 'C=GB,L=CARDIFF,O=MAC,OU=KAFKA,CN=CA'
   # generates
   # ca.key
   # ca.crt
+  # trust.jks
+  # trust.pass
 
 $ cert-make-host.sh 'C=GB,L=CARDIFF,O=MAC,CN=KAFKA' kafka.mac.wales
   # generates

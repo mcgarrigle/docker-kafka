@@ -3,14 +3,21 @@
 # Usage:
 # cert-make-ca.sh 'C=GB,L=CARDIFF,O=EXAMPLE,OU=KAFKA,CN=CA'
 
+passphrase() {
+  echo $RANDOM | md5sum | head -c $1
+}
+
 DN="$1"
+
+PASSPHRASE=$(passphrase 12)
 
 CONFIG="/tmp/ca.conf"
 CERT="ca.crt"
 KEY="ca.key"
 TRUSTSTORE="trust.jks"
 
-PASSPHRASE="GQLBSQFSAPTC"
+echo "${PASSPHRASE}" > "trust.pass"
+echo "KAFKA_SSL_TRUSTSTORE_PASSWORD=${PASSPHRASE}" > "keystores.pass"
 
 SUBJECT=$(echo "${DN}" | tr ',' '\n')
 
