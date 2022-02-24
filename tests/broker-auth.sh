@@ -7,6 +7,8 @@ TOPIC="events"
 
 # export KAFKA_OPTS="-Dlog4j.configuration=file:${HERE}/log4j.properties"
 
+# export KAFKA_OPTS="-Djavax.net.debug=all"
+
 echo
 echo '#publish'
 echo "//// AUTH message $(date) //" | kafka-console-producer.sh \
