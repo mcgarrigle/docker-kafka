@@ -1,7 +1,12 @@
 #!/bin/bash
 
 # Usage:
-# cert-make-host.sh 'C=GB,L=CARDIFF,O=EXAMPLE,CN=KAFKA' kafka.example.com
+#
+# cert-make-host.sh <subject> <cn> [san 1] ... [san n]
+#
+# creates a key, certificate, java keystore and a keystore password
+#
+# $ cert-make-host.sh 'C=GB,L=CARDIFF,O=EXAMPLE,CN=KAFKA' kafka kafka.example.com
 
 passphrase() {
   echo $RANDOM | md5sum | head -c $1
@@ -10,7 +15,6 @@ passphrase() {
 DN="$1"
 CN="$2"
 
-shift
 SAN=$(echo $@ | xargs -n 1 | awk '{print "DNS." NR " =",$0}')
 
 CONFIG="/tmp/${CN}.conf"
@@ -41,17 +45,15 @@ distinguished_name = dn
 x509_extensions = v3_req
 
 [dn]
-$SUBJECT
+${SUBJECT}
 
 [v3_req]
 basicConstraints=CA:FALSE
 subjectAltName=@alternatives
 
 [alternatives]
-DNS.1 = ${CN}
+${SAN}
 EOF
-
-cat "${CONFIG}"
 
 openssl genrsa -out "${KEY}" 4096
 
