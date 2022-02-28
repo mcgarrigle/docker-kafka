@@ -7,3 +7,4 @@ if [ "$1" == "hard" ]; then
 fi
 
 docker-compose up -d
+docker-compose ps

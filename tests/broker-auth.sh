@@ -23,6 +23,7 @@ kafka-console-consumer.sh \
   --consumer.config "${HERE}/consumer.properties" \
   --bootstrap-server ${BROKER} \
   --topic ${TOPIC} \
+  --group "${TOPIC}-group" \
   --from-beginning \
   --timeout-ms 5000
 echo '#subscribe complete'

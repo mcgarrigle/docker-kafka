@@ -58,6 +58,16 @@ Build kakacat (outside the scope of this README)
 
 ## Test
 ```
+$ kafka-topics.sh --bootstrap-server kafka:29093 --command-config tests/admin.properties --create --topic events
+$ kafka-topics.sh --bootstrap-server kafka:29093 --command-config tests/admin.properties --list
+
+$ kafka-acls.sh   --bootstrap-server kafka:29093 --command-config tests/admin.properties \
+  --add \
+  --topic events \
+  --producer \
+  --consumer --group event-group \
+  --allow-principal 'User:C=GB,L=CARDIFF,O=EXAMPLE,OU=KAFKA,CN=admin'
+
 $ echo fum |./root/kafkacat -P -b kafka:29093 -t events -X security.protocol=SSL -X ssl.ca.location=security/kafka.crt
 $ ./root/kafkacat -C -e -b kafka:29093 -t events -X security.protocol=SSL -X ssl.ca.location=security/kafka.crt
 ```
