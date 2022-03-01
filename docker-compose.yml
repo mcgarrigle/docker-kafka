@@ -18,34 +18,17 @@ services:
     image: kafka:test
     env_file:
       - './security/keystores.pass'
+      - './kafka.env'
     environment:
       KAFKA_BROKER_ID: 101
-      KAFKA_LOG_DIRS: '/data'
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181/kafka
-      KAFKA_LISTENERS: INTERNAL://kafka:9092,SECURE://kafka:29093
-      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,SECURE://kafka:29093
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,SECURE:SSL
-      KAFKA_INTER_BROKER_LISTENER_NAME: SECURE
-      KAFKA_SSL_PROTOCOL: TLS
-      KAFKA_SSL_ENABLED_PROTOCOLS: TLSv1.2,TLSv1.1,TLSv1
-      # KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: 
-      KAFKA_SSL_KEYMANAGER_ALGORITHM: SunX509
-      KAFKA_SSL_TRUSTMANAGER_ALGORITHM: PKIX
-      KAFKA_SSL_KEYSTORE_TYPE: JKS
-      KAFKA_SSL_TRUSTSTORE_TYPE: JKS
-      KAFKA_SSL_KEYSTORE_LOCATION: '/opt/kafka/security/kafka.jks'
-      KAFKA_SSL_TRUSTSTORE_LOCATION: '/opt/kafka/security/trust.jks'
-      KAFKA_SSL_CLIENT_AUTH: required
-      KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
-      KAFKA_SSL_PRINCIPAL_MAPPING_RULES: 'RULE:^.*[Cc][Nn]=([a-zA-Z0-9.]*).*$$/$$1/L,DEFAULT'
-      KAFKA_SUPER_USERS: 'User:kafka;User:admin'
+      KAFKA_LISTENERS: SECURE://kafka:29093
+      KAFKA_ADVERTISED_LISTENERS: SECURE://kafka:29093
 
     volumes:
       - './root:/root'
       - './security:/opt/kafka/security'
       - 'volume_kafka:/data'
     ports:
-      - "29092:29092"
       - "29093:29093"
     networks:
       - lan
