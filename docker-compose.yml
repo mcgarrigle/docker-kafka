@@ -13,39 +13,72 @@ services:
     networks:
       - lan
 
-  kafka:
-    hostname: kafka
+  kafka1:
+    hostname: kafka1
     image: kafka:test
     env_file:
       - './security/keystores.pass'
       - './kafka.env'
     environment:
       KAFKA_BROKER_ID: 101
-      KAFKA_LISTENERS: SECURE://kafka:29093
-      KAFKA_ADVERTISED_LISTENERS: SECURE://kafka:29093
+      KAFKA_LISTENERS: SECURE://kafka1:19093
+      KAFKA_ADVERTISED_LISTENERS: SECURE://kafka1:19093
 
     volumes:
       - './root:/root'
       - './security:/opt/kafka/security'
-      - 'volume_kafka:/data'
+      - 'volume_kafka1:/data'
+    ports:
+      - "19093:19093"
+    networks:
+      - lan
+
+  kafka2:
+    hostname: kafka2
+    image: kafka:test
+    env_file:
+      - './security/keystores.pass'
+      - './kafka.env'
+    environment:
+      KAFKA_BROKER_ID: 102
+      KAFKA_LISTENERS: SECURE://kafka2:29093
+      KAFKA_ADVERTISED_LISTENERS: SECURE://kafka2:29093
+
+    volumes:
+      - './root:/root'
+      - './security:/opt/kafka/security'
+      - 'volume_kafka2:/data'
     ports:
       - "29093:29093"
+    networks:
+      - lan
+
+  kafka3:
+    hostname: kafka3
+    image: kafka:test
+    env_file:
+      - './security/keystores.pass'
+      - './kafka.env'
+    environment:
+      KAFKA_BROKER_ID: 103
+      KAFKA_LISTENERS: SECURE://kafka3:39093
+      KAFKA_ADVERTISED_LISTENERS: SECURE://kafka3:39093
+
+    volumes:
+      - './root:/root'
+      - './security:/opt/kafka/security'
+      - 'volume_kafka3:/data'
+    ports:
+      - "39093:39093"
     networks:
       - lan
 
 volumes:
   volume_zookeeper_data:
   volume_zookeeper_log:
-  volume_kafka:
+  volume_kafka1:
+  volume_kafka2:
+  volume_kafka3:
 
 networks:
   lan:
-
-# https://rmoff.net/2018/08/02/kafka-listeners-explained/
-#
-# remember to add host 'kafka' to /etc/hosts
-#
-# KAFKA_LISTENERS: LISTENER_BOB://kafka0:29092,LISTENER_FRED://localhost:9092
-# KAFKA_ADVERTISED_LISTENERS: LISTENER_BOB://kafka0:29092,LISTENER_FRED://localhost:9092
-# KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_BOB:PLAINTEXT,LISTENER_FRED:PLAINTEXT
-# KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_BOB

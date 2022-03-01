@@ -26,7 +26,7 @@ $ cert-make-ca.sh 'CN=CA,OU=KAFKA,O=EXAMPLE,L=CARDIFF,C=GB'
 
 # make host cert
 
-$ cert-make-host.sh 'OU=KAFKA,O=EXAMPLE,L=CARDIFF,C=GB' kafka kafka.example.com
+$ cert-make-host.sh 'OU=KAFKA,O=EXAMPLE,L=CARDIFF,C=GB' kafka kafka1 kafka2 kafka3 kafka.example.com
   # generates:
   # kafka.key
   # kafka.crt
