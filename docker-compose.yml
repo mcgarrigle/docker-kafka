@@ -37,7 +37,8 @@ services:
       KAFKA_SSL_TRUSTSTORE_LOCATION: '/opt/kafka/security/trust.jks'
       KAFKA_SSL_CLIENT_AUTH: required
       KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
-      KAFKA_SUPER_USERS: 'User:CN=KAFKA,O=MAC,L=CARDIFF,C=GB;User:CN=admin,OU=KAFKA,O=EXAMPLE,L=CARDIFF,C=GB'
+      KAFKA_SSL_PRINCIPAL_MAPPING_RULES: 'RULE:^.*[Cc][Nn]=([a-zA-Z0-9.]*).*$$/$$1/L,DEFAULT'
+      KAFKA_SUPER_USERS: 'User:kafka;User:admin'
 
     volumes:
       - './root:/root'

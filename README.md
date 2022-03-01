@@ -17,7 +17,7 @@ $ cd security
 
 # setup CA and generate truststore
 
-$ cert-make-ca.sh 'C=GB,L=CARDIFF,O=MAC,OU=KAFKA,CN=CA'
+$ cert-make-ca.sh 'CN=CA,OU=KAFKA,O=EXAMPLE,L=CARDIFF,C=GB'
   # generates:
   # ca.key
   # ca.crt
@@ -26,7 +26,7 @@ $ cert-make-ca.sh 'C=GB,L=CARDIFF,O=MAC,OU=KAFKA,CN=CA'
 
 # make host cert
 
-$ cert-make-host.sh 'C=GB,L=CARDIFF,O=MAC,CN=KAFKA' kafka kafka.mac.wales
+$ cert-make-host.sh 'OU=KAFKA,O=EXAMPLE,L=CARDIFF,C=GB' kafka kafka.example.com
   # generates:
   # kafka.key
   # kafka.crt
@@ -35,19 +35,19 @@ $ cert-make-host.sh 'C=GB,L=CARDIFF,O=MAC,CN=KAFKA' kafka kafka.mac.wales
 
 # make user certifcate for admin user
 
-$ cert-make-user.sh 'C=GB,L=CARDIFF,O=EXAMPLE,OU=KAFKA' admin
+$ cert-make-user.sh 'OU=KAFKA,O=EXAMPLE,L=CARDIFF,C=GB' admin
   # generates:
   # admin.key
   # admin.crt
   # admin.jks
   # admin.pass
 
-$ cert-make-user.sh 'C=GB,L=CARDIFF,O=MAC,OU=KAFKA'
+$ cert-make-user.sh 'OU=KAFKA,O=EXAMPLE,L=CARDIFF,C=GB'
   # generates:
-  # U10083B58.key
-  # U10083B58.crt
-  # U10083B58.jks
-  # U10083B58.pass
+  # u10083b58.key
+  # u10083b58.crt
+  # u10083b58.jks
+  # u10083b58.pass
 ```
 
 ## Run Docker Compose

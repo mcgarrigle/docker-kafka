@@ -6,7 +6,7 @@
 #
 # creates a key, certificate, java keystore and a keystore password
 #
-# $ cert-make-host.sh 'C=GB,L=CARDIFF,O=EXAMPLE,CN=KAFKA' kafka kafka.example.com
+# $ cert-make-host.sh 'OU=KAFKA,O=EXAMPLE,L=CARDIFF,C=GB' kafka kafka.example.com
 
 passphrase() {
   echo $RANDOM | md5sum | head -c $1
@@ -15,6 +15,7 @@ passphrase() {
 DN="$1"
 CN="$2"
 
+shift
 SAN=$(echo $@ | xargs -n 1 | awk '{print "DNS." NR " =",$0}')
 
 CONFIG="/tmp/${CN}.conf"
@@ -45,6 +46,7 @@ distinguished_name = dn
 x509_extensions = v3_req
 
 [dn]
+CN=${CN}
 ${SUBJECT}
 
 [v3_req]

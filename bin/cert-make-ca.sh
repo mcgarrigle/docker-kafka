@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Usage:
-# cert-make-ca.sh 'C=GB,L=CARDIFF,O=EXAMPLE,OU=KAFKA,CN=CA'
+# cert-make-ca.sh 'CN=CA,OU=KAFKA,O=EXAMPLE,L=CARDIFF,C=GB'
 
 passphrase() {
   echo $RANDOM | md5sum | head -c $1

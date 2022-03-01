@@ -12,9 +12,9 @@
 # If [user CN] is omitted then a user principal CN will be created
 # of the form 'UXXXXXXXX' e.g. 'U4550C801'.
 #
-# $ cert-make-user.sh 'C=GB,L=CARDIFF,O=EXAMPLE,OU=KAFKA' root
+# $ cert-make-user.sh 'OU=KAFKA,O=EXAMPLE,L=CARDIFF,C=GB' admin
 #
-# will generate a certificate for 'C=GB,L=CARDIFF,O=EXAMPLE,OU=KAFKA,CN=root'
+# will generate a certificate for 'CN=admin,OU=KAFKA,O=EXAMPLE,L=CARDIFF,C=GB'
 #
 
 passphrase() {
@@ -23,9 +23,10 @@ passphrase() {
 
 if [ -z "$2" ]; then
   RAND="$(passphrase 8)"
-  CN="U${RAND^^}"
+  CN="u${RAND,,}"
 else
-  CN="$2"
+  # X="$2"
+  CN="${2,,}"
 fi
 
 BN="$1"
@@ -54,8 +55,8 @@ distinguished_name = dn
 x509_extensions = v3_req
 
 [dn]
-$SUBJECT
 CN=${CN}
+$SUBJECT
 
 [v3_req]
 basicConstraints=CA:FALSE
@@ -72,6 +73,8 @@ openssl req -new \
 
 openssl x509 -req \
   -in "${CSR}" \
+  -extfile "${CONFIG}" \
+  -extensions "v3_req" \
   -out "${CERT}" \
   -CA "ca.crt" \
   -CAkey "ca.key" \
