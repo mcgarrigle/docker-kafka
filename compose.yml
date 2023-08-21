@@ -1,0 +1,32 @@
+version: '2'
+
+services:
+
+  broker1:
+    hostname: broker1
+    image: macthegif/kafka:test
+    # command: "sleep 3600"
+    environment:
+      - KAFKA_CLUSTER_ID=9erof1AKQlSi2WQiREBVSA
+      - KAFKA_NODE_ID=1
+      - KAFKA_CONF_DIR=/data/config
+      - KAFKA_LOG_DIRS=/data/logs
+      - KAFKA_ADVERTISED_LISTENERS=SECURE://{{ .Node.Hostname }}:19093
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CONTROLLER_QUORUM_VOTERS=1@localhost:9093
+      - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL
+      - KAFKA_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+    volumes:
+      - 'data:/data'
+    ports:
+      - "9092:9092"
+    networks:
+      - lan
+
+volumes:
+  data:
+
+networks:
+  lan:

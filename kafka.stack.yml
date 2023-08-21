@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+
+  controller:
+    hostname: "controller{{ .Task.Slot }}"
+    image: macthegif/kafka:test
+    command: "sleep 3600"
+    env_file:
+      - './kafka.env'
+    environment:
+      KAFKA_NODE_ID: "{{ .Task.Slot }}"
+      KAFKA_ADVERTISED_LISTENERS: "SECURE://{{ .Node.Hostname }}:19093"
+    volumes:
+      - 'data:/data'
+    ports:
+      - target: 9093
+        published: 9093
+        mode: host
+    networks:
+      - lan
+    deploy:
+      mode: replicated
+      replicas: 3
+      placement:
+        constraints:
+          - "node.labels.${STACK} == 1"
+
+  broker:
+    hostname: "broker{{ .Task.Slot }}"
+    image: macthegif/kafka:test
+    command: "sleep 3600"
+    env_file:
+      - './kafka.env'
+    environment:
+      KAFKA_NODE_ID: "{{ .Task.Slot }}"
+      KAFKA_ADVERTISED_LISTENERS: "SECURE://{{ .Node.Hostname }}:19093"
+    volumes:
+      - 'data:/data'
+    ports:
+      - target: 9093
+        published: 9093
+        mode: host
+    networks:
+      - lan
+    deploy:
+      mode: replicated
+      replicas: 0
+      placement:
+        constraints:
+          - "node.labels.${STACK} == 1"
+
+volumes:
+  data:
+
+networks:
+  lan:

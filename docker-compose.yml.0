@@ -2,59 +2,115 @@ version: '2'
 
 services:
 
-  zookeeper:
-    hostname: zookeeper
+  zookeeper1:
+    hostname: zookeeper1
     image: zookeeper:latest
     environment:
-      ZOO_DATA_DIR: '/data'
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zookeeper1:1888:1889;2181 server.2=zookeeper2:2888:2889;2182 server.3=zookeeper3:3888:3889;2183
     volumes:
-      - 'volume_zookeeper:/data'
+      - 'volume_zookeeper1_data:/data'
+      - 'volume_zookeeper1_log:/datalog'
+    ports:
+      - '2181:2181'
     networks:
       - lan
 
-  kafka:
-    hostname: kafka
-    image: kafka:test
+  zookeeper2:
+    hostname: zookeeper2
+    image: zookeeper:latest
     environment:
-      KAFKA_LOG_DIRS: '/data'
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181/kafka
-      KAFKA_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://kafka:29092,SSL://kafka:29093
-      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://kafka:29092,SSL://kafka:29093
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,SSL:SSL
-      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
-      KAFKA_SSL_PROTOCOL: TLS
-      KAFKA_SSL_ENABLED_PROTOCOLS: TLSv1.2,TLSv1.1,TLSv1
-      KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: 
-      KAFKA_SSL_KEYMANAGER_ALGORITHM: SunX509
-      KAFKA_SSL_TRUSTMANAGER_ALGORITHM: PKIX
-      KAFKA_SSL_KEYSTORE_TYPE: JKS
-      KAFKA_SSL_TRUSTSTORE_TYPE: JKS
-      KAFKA_SSL_KEYSTORE_PASSWORD: BF3U7SYNJ0ZT
-      KAFKA_SSL_TRUSTSTORE_PASSWORD: BF3U7SYNJ0ZT
-      KAFKA_SSL_KEYSTORE_LOCATION: '/opt/kafka/security/kafka.jks'
-      KAFKA_SSL_TRUSTSTORE_LOCATION: '/opt/kafka/security/trust.jks'
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zookeeper1:1888:1889;2181 server.2=zookeeper2:2888:2889;2182 server.3=zookeeper3:3888:3889;2183
     volumes:
-      - ./root:/root
-      - ./security:/opt/kafka/security
-      - 'volume_kafka:/data'
+      - 'volume_zookeeper2_data:/data'
+      - 'volume_zookeeper2_log:/datalog'
     ports:
-      - "29092:29092"
+      - '2182:2182'
+    networks:
+      - lan
+
+  zookeeper3:
+    hostname: zookeeper3
+    image: zookeeper:latest
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zookeeper1:1888:1889;2181 server.2=zookeeper2:2888:2889;2182 server.3=zookeeper3:3888:3889;2183
+    volumes:
+      - 'volume_zookeeper3_data:/data'
+      - 'volume_zookeeper3_log:/datalog'
+    ports:
+      - '2183:2183'
+    networks:
+      - lan
+
+  kafka1:
+    hostname: kafka1
+    image: kafka:test
+    env_file:
+      - './security/keystores.pass'
+      - './kafka.env'
+    environment:
+      KAFKA_BROKER_ID: 101
+      KAFKA_LISTENERS: SECURE://kafka1:19093
+      KAFKA_ADVERTISED_LISTENERS: SECURE://kafka1:19093
+    volumes:
+      - './root:/root'
+      - './security:/opt/kafka/security'
+      - 'volume_kafka1:/data'
+    ports:
+      - "19093:19093"
+    networks:
+      - lan
+
+  kafka2:
+    hostname: kafka2
+    image: kafka:test
+    env_file:
+      - './security/keystores.pass'
+      - './kafka.env'
+    environment:
+      KAFKA_BROKER_ID: 102
+      KAFKA_LISTENERS: SECURE://kafka2:29093
+      KAFKA_ADVERTISED_LISTENERS: SECURE://kafka2:29093
+    volumes:
+      - './root:/root'
+      - './security:/opt/kafka/security'
+      - 'volume_kafka2:/data'
+    ports:
       - "29093:29093"
     networks:
       - lan
 
+  kafka3:
+    hostname: kafka3
+    image: kafka:test
+    env_file:
+      - './security/keystores.pass'
+      - './kafka.env'
+    environment:
+      KAFKA_BROKER_ID: 103
+      KAFKA_LISTENERS: SECURE://kafka3:39093
+      KAFKA_ADVERTISED_LISTENERS: SECURE://kafka3:39093
+    volumes:
+      - './root:/root'
+      - './security:/opt/kafka/security'
+      - 'volume_kafka3:/data'
+    ports:
+      - "39093:39093"
+    networks:
+      - lan
+
 volumes:
-  volume_zookeeper:
-  volume_kafka:
+  volume_zookeeper1_data:
+  volume_zookeeper1_log:
+  volume_zookeeper2_data:
+  volume_zookeeper2_log:
+  volume_zookeeper3_data:
+  volume_zookeeper3_log:
+  volume_kafka1:
+  volume_kafka2:
+  volume_kafka3:
 
 networks:
   lan:
-
-# https://rmoff.net/2018/08/02/kafka-listeners-explained/
-#
-# remember to add host 'kafka' to /etc/hosts
-#
-# KAFKA_LISTENERS: LISTENER_BOB://kafka0:29092,LISTENER_FRED://localhost:9092
-# KAFKA_ADVERTISED_LISTENERS: LISTENER_BOB://kafka0:29092,LISTENER_FRED://localhost:9092
-# KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_BOB:PLAINTEXT,LISTENER_FRED:PLAINTEXT
-# KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_BOB

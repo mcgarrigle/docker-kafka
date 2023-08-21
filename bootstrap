@@ -1,16 +1,29 @@
 #!/bin/bash
 
-properties() {
+function properties {
+  unset KAFKA_CONF_DIR
+  unset KAFKA_CLUSTER_ID
   for VAR in "${!KAFKA_@}"; do
      PROPERTY=$(echo ${VAR,,} | tr '_' '.')
      echo "${PROPERTY:6}=${!VAR}"
   done
 }
 
+function configure {
+  echo "creating server properties at $2"
+  mkdir -p "${KAFKA_LOG_DIRS}" "${KAFKA_CONF_DIR}"
+  properties > "$2"
+  /opt/kafka/bin/kafka-storage.sh format -t "$1" -c "$2"
+}
+
 # note: will break if there is more than one log.dirs
 
-sed -i '/^cluster\.id/d' $KAFKA_LOG_DIRS/meta.properties 
+CONFIG="${KAFKA_CONF_DIR}/server.properties"
 
-properties > '/opt/kafka/config/server.properties'
+if [ -f "${CONFIG}" ]; then
+  echo "existing server properties found at ${CONFIG}"
+else
+  configure "${KAFKA_CLUSTER_ID}" "${CONFIG}" 
+fi
 
-/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties
+/opt/kafka/bin/kafka-server-start.sh "${CONFIG}"

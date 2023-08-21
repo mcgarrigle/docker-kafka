@@ -15,12 +15,12 @@ function download {
 
 # ---------------------------------------------------------
 
-url="https://downloads.apache.org/kafka/3.1.0/kafka_2.13-3.1.0.tgz"
+cd /tmp
 
-file="/tmp/$(basename $url)"
+url="https://downloads.apache.org/kafka/3.5.1/kafka_2.13-3.5.1.tgz"
+
+file="$(basename $url)"
 
 download $url $file
 
 tar xzf $file
-
-# end
