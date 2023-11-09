@@ -1,0 +1,63 @@
+#!/bin/bash
+
+function snooze {
+  secs=$1
+  while [ $secs -gt 0 ]; do
+     echo -ne "  $2 $secs\033[0K\r"
+     sleep 1
+     : $((secs--))
+  done
+  echo
+}
+
+function clean {
+  docker stack rm "${STACK}"
+  snooze 30 "waiting for stack to completely disappear"
+}
+
+function deploy {
+  docker stack deploy -c kafka.stack.yml "${STACK}"
+  snooze 10 "waiting for stack to come up"
+}
+
+function reset {
+  clean
+  snooze 20 "waiting for network to disappear"
+  deploy
+}
+
+# -------------------------------------------------
+# -- commands
+
+function help_command {
+  echo ""
+  echo "build - perform actions for development and deployment"
+  echo ""
+  echo "Commands:"
+  declare -F | awk '/_command/ { gsub("_command", "", $3); print "* " $3 }'
+}
+
+function deploy_command {
+  deploy
+}
+
+function clean_command {
+  clean
+}
+
+function reset_command {
+  reset
+}
+
+# -------------------------------------------------
+# -- main
+
+if [ -n "${ENVIRONMENT_FILE}" ]; then
+  . ${ENVIRONMENT_FILE}
+else
+  echo "environment unset"
+fi
+
+export PATH=$PATH:$(realpath tools)
+
+${1:-help}_command

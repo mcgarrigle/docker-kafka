@@ -9,7 +9,7 @@ services:
     env_file:
       - './kafka.env'
     environment:
-      KAFKA_NODE_ID: "{{ .Task.Slot }}"
+      KAFKA_NODE_ID: "1{{ .Task.Slot }}"
       KAFKA_CLUSTER_ID: 9erof1AKQlSi2WQiREBVSA
       KAFKA_CONF_DIR: /data/config
       KAFKA_LOG_DIRS: /data/logs
@@ -29,7 +29,7 @@ services:
       - lan
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 1
       placement:
         constraints:
           - "node.labels.${STACK} == 1"
@@ -41,7 +41,7 @@ services:
     env_file:
       - './kafka.env'
     environment:
-      KAFKA_NODE_ID: "{{ .Task.Slot }}"
+      KAFKA_NODE_ID: "2{{ .Task.Slot }}"
       KAFKA_ADVERTISED_LISTENERS: "SECURE://{{ .Node.Hostname }}:9093"
     volumes:
       - 'data:/data'
