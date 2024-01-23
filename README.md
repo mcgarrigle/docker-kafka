@@ -51,8 +51,16 @@ $ cert-make-user.sh 'OU=KAFKA,O=EXAMPLE,L=CARDIFF,C=GB'
 ```
 
 ## Run Docker Compose
+
+Make sure ``.../kafka/bin`` is in your path.
 ```
 $ docker-compose up -d
+
+kafka-topics.sh --bootstrap-server node1:9092 --create --topic events
+kafka-topics.sh --bootstrap-server node1:9092 --list
+
+date | kafka-console-producer.sh --bootstrap-server node1:9092 --topic events
+kafka-console-consumer.sh  --bootstrap-server node1:9092 --topic events --group event-consumer
 ```
 Build kakacat (outside the scope of this README)
 

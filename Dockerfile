@@ -1,11 +1,13 @@
 FROM oraclelinux:8.5
 
+ARG DOWNLOADS="."
+
 RUN dnf install -q -y java
 
 RUN groupadd kafka --gid 1000
 RUN useradd kafka --uid 1000 --gid 1000
 
-COPY kafka_2.13-3.5.1/ /opt/kafka/
+COPY ${DOWNLOADS}/kafka_2.13-3.5.1/ /opt/kafka/
 COPY bootstrap /
 
 RUN mkdir /data
