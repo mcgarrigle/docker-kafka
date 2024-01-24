@@ -3,3 +3,4 @@
 docker compose down
 docker volume rm kafka_data
 docker compose up -d
+docker logs -f kafka-broker-1
