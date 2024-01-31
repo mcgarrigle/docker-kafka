@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+
+import subprocess
+import collections
+import json
+import click
+
+def shell(command):
+    return subprocess.check_output(command, shell=True).decode("utf-8")
+
+def shell_json(command):
+    return json.loads(shell(command))
+
+def read_nodes():
+    ids = shell("docker node ls --quiet").splitlines()
+    nodes = shell_json(f"docker node inspect {' '.join(ids)}")
+    labels = [ (node["Description"]["Hostname"], node["Spec"]["Labels"]) for node in nodes ]
+    return dict(labels)
+
+def find_roles(nodes):
+    roles = collections.defaultdict(list)
+    for node, labels in nodes.items():
+        for role in labels.keys():
+            roles[role].append(node)
+    return roles
+
+# ------------------------------------------------------------------
+
+@click.group()
+def cli():
+    pass
+
+@cli.command()
+def labels():
+    print(json.dumps(nodes, indent=2))
+
+@cli.command()
+@click.argument('stack_name')
+def roles(stack_name):
+    length = len(stack_name) + 1
+    roles = find_roles(nodes)
+    for role, role_nodes in roles.items():
+        if role.startswith(stack_name):
+            role = role[length:]
+            print(f"export {role.upper()}_NODES='{' '.join(role_nodes)}'")
+
+if __name__ == '__main__':
+    nodes = read_nodes()
+    cli()
